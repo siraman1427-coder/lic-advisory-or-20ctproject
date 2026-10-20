@@ -56,7 +56,7 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
     const height = container.clientHeight || window.innerHeight;
 
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    camera.position.set(0, 0, 3.4);
+    camera.position.set(0, 0, 3.8);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -159,14 +159,14 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
           const size = box.getSize(new THREE.Vector3());
           const maxDimension = Math.max(size.x, size.y, size.z);
 
-          // Monumental center scaling
-          const targetHeight = 2.2;
+          // Elegant center scaling (smaller, beautifully occupying the center of the hero section)
+          const targetHeight = 1.25;
           const scale = targetHeight / maxDimension;
           root.scale.setScalar(scale);
 
-          // Center geometry in pivot group
+          // Center geometry in pivot group with subtle vertical alignment
           root.position.x = -center.x * scale;
-          root.position.y = -center.y * scale - 0.08;
+          root.position.y = -center.y * scale - 0.02;
           root.position.z = -center.z * scale;
 
           modelPivot.add(root);
