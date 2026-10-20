@@ -90,7 +90,7 @@ export default function StitchAdvisorDossier() {
             {/* Direct Line Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <a
-                href="tel:781792960X"
+                href="tel:7817929602"
                 className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-[#F59E0B]/50 hover:bg-white/[0.06] transition-all group"
               >
                 <div className="w-10 h-10 rounded-full bg-[#F59E0B]/10 flex items-center justify-center text-[#F59E0B] group-hover:bg-[#F59E0B] group-hover:text-black transition-colors shrink-0">
@@ -101,7 +101,7 @@ export default function StitchAdvisorDossier() {
                     Direct Advisory Line
                   </span>
                   <span className="text-xs sm:text-sm font-semibold text-white tracking-wide truncate">
-                    +91 781792960X
+                    +91 7817929602
                   </span>
                 </div>
               </a>
@@ -127,7 +127,7 @@ export default function StitchAdvisorDossier() {
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-3 pt-3">
               <a
-                href="tel:781792960X"
+                href="tel:7817929602"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F59E0B] text-black font-semibold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(245,158,11,0.35)] hover:bg-[#FBBF24] hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <span className="material-symbols-outlined text-[18px]">phone_in_talk</span>
@@ -135,7 +135,7 @@ export default function StitchAdvisorDossier() {
               </a>
 
               <a
-                href="https://wa.me/91781792960X"
+                href="https://wa.me/917817929602"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-semibold text-xs tracking-wider uppercase hover:scale-[1.02] active:scale-[0.98] transition-all"

@@ -433,15 +433,15 @@ export default function Home() {
         {/* Right: Audio toggle & Contact Quick Actions */}
         <div className="flex items-center gap-3 md:gap-4">
           <a
-            href="tel:781792960X"
+            href="tel:7817929602"
             className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/15 text-[11px] font-mono text-[#F59E0B] hover:bg-white/[0.08] transition-colors"
           >
             <span className="material-symbols-outlined text-[15px]">call</span>
-            <span>781792960X</span>
+            <span>7817929602</span>
           </a>
 
           <a
-            href="https://wa.me/91781792960X"
+            href="https://wa.me/917817929602"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00529B]/30 hover:bg-[#00529B]/60 border border-[#38BDF8]/40 text-[11px] font-mono text-[#38BDF8] uppercase tracking-wider transition-all"

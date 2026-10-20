@@ -8,19 +8,19 @@ export default function ContactPage() {
     {
       city: "New Delhi (Headquarters / Division)",
       address: "LIC Northern Zonal Division, Connaught Place, New Delhi",
-      phone: "+91 781792960X",
+      phone: "+91 7817929602",
       type: "Primary Advisory Hub",
     },
     {
       city: "Noida / Greater Noida",
       address: "Sector 18 & Expressway Executive Client Desk",
-      phone: "+91 781792960X",
+      phone: "+91 7817929602",
       type: "Doorstep Verification Available",
     },
     {
       city: "Gurugram / Cyber City",
       address: "Golf Course Road & DLF CyberCity Advisory Suite",
-      phone: "+91 781792960X",
+      phone: "+91 7817929602",
       type: "High-Net-Worth Advisory",
     },
   ];
@@ -141,7 +141,7 @@ export default function ContactPage() {
       <footer className="w-full bg-[#030407] py-12 border-t border-white/10 text-center text-xs font-mono text-white/40">
         <p>© 2025 AMAN CHAUDHARY • LIC INDIA AUTHORIZED ADVISORY (AGENCY: LIC-ND-7817929)</p>
         <p className="mt-1 text-[10px] text-white/30 uppercase">
-          Direct Line: +91 781792960X • Official Email: siraman142@gmail.com
+          Direct Line: +91 7817929602 • Official Email: siraman142@gmail.com
         </p>
       </footer>
     </div>

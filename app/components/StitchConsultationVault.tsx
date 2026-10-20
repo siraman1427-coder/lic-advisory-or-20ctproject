@@ -49,10 +49,10 @@ export default function StitchConsultationVault() {
                       Call Immediately
                     </span>
                     <a
-                      href="tel:781792960X"
+                      href="tel:7817929602"
                       className="text-sm font-semibold text-white hover:text-[#F59E0B] transition-colors"
                     >
-                      +91 781792960X
+                      +91 7817929602
                     </a>
                   </div>
                 </div>

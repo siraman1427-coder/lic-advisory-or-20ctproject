@@ -65,15 +65,15 @@ export default function GlobalHeader() {
         {/* Right CTA Links */}
         <div className="flex items-center gap-3">
           <a
-            href="tel:781792960X"
+            href="tel:7817929602"
             className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-mono text-white/80 transition-colors"
           >
             <span className="material-symbols-outlined text-[#F59E0B] text-[16px]">call</span>
-            <span>781792960X</span>
+            <span>7817929602</span>
           </a>
 
           <a
-            href="https://wa.me/91781792960X"
+            href="https://wa.me/917817929602"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#00529B]/40 hover:bg-[#00529B]/70 border border-[#38BDF8]/40 text-[#38BDF8] text-xs font-mono uppercase tracking-wider transition-all"
@@ -113,14 +113,14 @@ export default function GlobalHeader() {
 
           <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
             <a
-              href="tel:781792960X"
+              href="tel:7817929602"
               className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-bold uppercase tracking-wider"
             >
               <span className="material-symbols-outlined text-[18px]">phone_in_talk</span>
-              <span>Call Advisor: 781792960X</span>
+              <span>Call Advisor: 7817929602</span>
             </a>
             <a
-              href="https://wa.me/91781792960X"
+              href="https://wa.me/917817929602"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-[#00529B] text-white text-xs font-bold uppercase tracking-wider"
