@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LICAdvisoryShowcase() {
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [consultModalOpen, setConsultModalOpen] = useState(false);
   const [viewportDims, setViewportDims] = useState({ width: 1440, height: 900 });
 
   // Lerp smoothing state for buttery 60fps scroll transitions
@@ -424,98 +424,19 @@ export default function LICAdvisoryShowcase() {
                 </p>
               </div>
 
-              <button
-                onClick={() => setConsultModalOpen(true)}
-                className="group inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-semibold tracking-[0.15em] uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] active:scale-95 shrink-0 cursor-pointer"
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-semibold tracking-[0.15em] uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] active:scale-95 shrink-0"
               >
-                <span>Book Review</span>
+                <span>Go to Help Desk</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1 font-sans">
                   →
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
         )}
       </div>
-
-      {/* PORTFOLIO REVIEW CONSULTATION MODAL */}
-      {consultModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 sm:p-6 transition-all animate-fadeIn"
-          onClick={() => setConsultModalOpen(false)}
-        >
-          <div
-            className="relative w-full max-w-xl rounded-3xl border border-[#F59E0B]/30 bg-[#07090E] p-6 sm:p-8 shadow-2xl text-left"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between border-b border-white/10 pb-4">
-              <div>
-                <span className="text-[10px] tracking-[0.3em] uppercase text-[#F59E0B] font-semibold">
-                  CONFIDENTIAL ADVISORY
-                </span>
-                <h3 className="font-editorial-serif text-2xl text-white font-medium mt-1">
-                  LIC Portfolio Review Session
-                </h3>
-              </div>
-              <button
-                onClick={() => setConsultModalOpen(false)}
-                className="rounded-full border border-white/20 p-2 text-white/60 hover:text-white hover:border-white transition-colors"
-                aria-label="Close dialog"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="mt-5 space-y-4 text-xs font-light text-white/70">
-              <p>
-                Schedule a one-on-one private review with an Authorized LIC India Advisor to audit existing policies, identify maturity dates, optimize Section 80C & 10(10D) tax benefits, or architect guaranteed lifelong retirement annuities.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.03]">
-                  <p className="font-medium text-white text-xs">Policy Audit & Revival</p>
-                  <p className="text-[11px] text-white/50 mt-1">
-                    Revive lapsed policies, update nominations, and claim pending bonuses.
-                  </p>
-                </div>
-                <div className="p-3.5 rounded-xl border border-white/10 bg-white/[0.03]">
-                  <p className="font-medium text-white text-xs">High-Cover Protection</p>
-                  <p className="text-[11px] text-white/50 mt-1">
-                    Bespoke family security under sovereign guarantee.
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-3">
-                <label className="block text-[11px] tracking-wider uppercase text-white/50 mb-1.5 font-mono">
-                  Direct WhatsApp / Call Request
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="tel"
-                    placeholder="Enter 10-digit mobile number"
-                    className="flex-1 px-4 py-2.5 rounded-full border border-white/20 bg-black/60 text-white placeholder-white/30 text-xs focus:outline-none focus:border-[#F59E0B]"
-                  />
-                  <button
-                    onClick={() => {
-                      alert("Thank you. An Authorized LIC Advisor will connect with you shortly.");
-                      setConsultModalOpen(false);
-                    }}
-                    className="px-5 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-semibold tracking-wider uppercase hover:bg-[#FBBF24] transition-colors"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] tracking-wider uppercase text-white/40 font-mono">
-              <span>Section 37 Sovereign Guarantee</span>
-              <span>Govt. of India Enterprise</span>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

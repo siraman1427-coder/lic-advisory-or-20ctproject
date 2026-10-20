@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface PlanCardData {
   id: string;
@@ -19,7 +20,6 @@ interface PlanCardData {
 
 export default function LICPortfolioArchive() {
   const [selectedPlan, setSelectedPlan] = useState<PlanCardData | null>(null);
-  const [consultationOpen, setConsultationOpen] = useState(false);
 
   const planCards: PlanCardData[] = [
     {
@@ -472,25 +472,23 @@ export default function LICPortfolioArchive() {
           </div>
         </div>
 
-        {/* SECTION FOOTER CTA: DESIGN YOUR CUSTOM LIC PORTFOLIO */}
-        <div className="mt-20 pt-10 border-t border-white/10 flex flex-col items-center text-center">
-          <p className="text-xs font-mono tracking-[0.3em] uppercase text-[#F59E0B] font-semibold mb-3">
-            BESPOKE FINANCIAL ARCHITECTURE
-          </p>
-
-          <button
-            onClick={() => setConsultationOpen(true)}
-            className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 rounded-full bg-gradient-to-r from-white via-white/95 to-white/90 text-black text-sm font-semibold tracking-[0.18em] uppercase transition-all duration-300 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)] active:scale-[0.98] cursor-pointer"
-          >
-            <span>DESIGN YOUR CUSTOM LIC PORTFOLIO</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-1.5 font-sans text-base">
-              →
+        {/* HELP DESK REDIRECTION */}
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div>
+            <span className="text-[10px] font-mono tracking-widest text-[#F59E0B] uppercase font-semibold block">
+              ADVISORY & POLICY HELP DESK
             </span>
-          </button>
-
-          <p className="text-xs font-light text-white/50 tracking-wide mt-3.5">
-            1-on-1 Confidential Consultation • Zero Obligation • Sovereign Protection
-          </p>
+            <p className="text-xs text-white/60 font-light mt-0.5">
+              Need personalized actuarial structuring or doorstep policy servicing? Connect with our Help Desk.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.06] hover:bg-[#F59E0B] hover:text-black border border-white/15 hover:border-[#F59E0B] text-white text-xs font-mono tracking-wider uppercase transition-all duration-300 shadow-[0_0_25px_rgba(245,158,11,0.15)] shrink-0"
+          >
+            <span className="material-symbols-outlined text-[16px]">support_agent</span>
+            <span>Go to Help Desk →</span>
+          </Link>
         </div>
       </div>
 
@@ -722,80 +720,16 @@ export default function LICPortfolioArchive() {
                 SECTION 37 SOVEREIGN GUARANTEE
               </span>
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <button
-                  onClick={() => {
-                    setSelectedPlan(null);
-                    setConsultationOpen(true);
-                  }}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-semibold tracking-wider uppercase hover:bg-[#FBBF24] transition-colors"
+                <Link
+                  href="/contact"
+                  onClick={() => setSelectedPlan(null)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-semibold tracking-wider uppercase hover:bg-[#FBBF24] transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)]"
                 >
-                  Request Official Illustration
-                </button>
+                  <span className="material-symbols-outlined text-[16px]">support_agent</span>
+                  <span>Go to Help Desk</span>
+                  <span className="font-sans">→</span>
+                </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PORTFOLIO DESIGN CONSULTATION MODAL */}
-      {consultationOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 sm:p-6 transition-all"
-          onClick={() => setConsultationOpen(false)}
-        >
-          <div
-            className="relative w-full max-w-lg rounded-3xl border border-[#F59E0B]/30 bg-[#07090E] p-6 sm:p-8 shadow-2xl text-left"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between border-b border-white/10 pb-4">
-              <div>
-                <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-[#F59E0B] font-semibold">
-                  PRIVATE WEALTH ARCHITECTURE
-                </span>
-                <h3 className="font-editorial-serif text-2xl text-white font-medium mt-1">
-                  Design Your LIC Portfolio
-                </h3>
-              </div>
-              <button
-                onClick={() => setConsultationOpen(false)}
-                className="rounded-full border border-white/20 p-2 text-white/60 hover:text-white hover:border-white transition-colors"
-                aria-label="Close dialog"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="mt-5 space-y-4 text-xs font-light text-white/70">
-              <p>
-                Collaborate with an Authorized LIC India Advisor to structure a customized balance of lifetime guaranteed income, tax-exempt milestone payouts, and sovereign estate preservation.
-              </p>
-
-              <div>
-                <label className="block text-[11px] tracking-wider uppercase text-white/50 mb-1.5 font-mono">
-                  Enter Contact Phone / WhatsApp
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="tel"
-                    placeholder="Enter 10-digit mobile number"
-                    className="flex-1 px-4 py-2.5 rounded-full border border-white/20 bg-black/60 text-white placeholder-white/30 text-xs focus:outline-none focus:border-[#F59E0B]"
-                  />
-                  <button
-                    onClick={() => {
-                      alert("Your custom portfolio request has been logged. An Authorized Advisor will reach out shortly.");
-                      setConsultationOpen(false);
-                    }}
-                    className="px-5 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-semibold tracking-wider uppercase hover:bg-[#FBBF24] transition-colors"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-white/40">
-              <span>Section 37 Sovereign Guarantee</span>
-              <span>Zero Obligation</span>
             </div>
           </div>
         </div>
