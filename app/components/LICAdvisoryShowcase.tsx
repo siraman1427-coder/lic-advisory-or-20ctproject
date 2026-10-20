@@ -250,7 +250,7 @@ export default function LICAdvisoryShowcase() {
     },
     {
       id: "term-assurance",
-      className: "top-[28%] right-[8%] sm:right-[16%] md:right-[20%]",
+      className: "top-[28%] right-[4%] sm:right-[6%] md:right-[9%]",
       vx: 0.9,
       vy: -1.2,
       baseRotate: -1.6,
@@ -259,20 +259,6 @@ export default function LICAdvisoryShowcase() {
           <span className="text-xs text-[#38BDF8]">🛡</span>
           <span className="text-xs font-medium text-white/85 tracking-wide">
             Term Assurance & High-Cover Family Protection
-          </span>
-        </div>
-      ),
-    },
-    {
-      id: "sovereign-guarantee",
-      className: "top-[8%] right-[26%] sm:right-[32%] md:right-[36%]",
-      vx: 0.3,
-      vy: -1.5,
-      baseRotate: 1.2,
-      content: (
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full border border-[#F59E0B]/30 bg-[#F59E0B]/10 backdrop-blur-sm">
-          <span className="text-[9px] tracking-[0.25em] uppercase font-bold text-[#F59E0B]">
-            Section 37 LIC Act 1956 — 100% Sovereign Guarantee
           </span>
         </div>
       ),
@@ -289,24 +275,6 @@ export default function LICAdvisoryShowcase() {
         {/* Subtle background luxury ambient glow on obsidian backdrop */}
         <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,82,155,0.12),transparent_70%)]" />
         <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_50%,rgba(245,158,11,0.06),transparent_60%)]" />
-
-        {/* SECTION HEADER KICKER (visible in initial state, fades out with scroll) */}
-        <div
-          className="pointer-events-none absolute top-6 sm:top-8 z-30 flex flex-col items-center text-center transition-opacity duration-300 px-4"
-          style={{ opacity: Math.max(0, 1 - smoothProgress * 4) }}
-        >
-          <div className="flex items-center gap-2 text-[10px] tracking-[0.35em] uppercase text-[#F59E0B] font-medium">
-            <span className="w-6 h-[1px] bg-[#F59E0B]/50" />
-            <span>PREMIER FINANCIAL ARCHITECTURE</span>
-            <span className="w-6 h-[1px] bg-[#F59E0B]/50" />
-          </div>
-          <h2 className="font-editorial-serif text-xl sm:text-2xl text-white/90 mt-1 tracking-wider">
-            The Guardian of Family Wealth
-          </h2>
-          <p className="text-[11px] text-white/40 tracking-[0.2em] uppercase mt-0.5">
-            Scroll to expand horizon ↓
-          </p>
-        </div>
 
         {/* FLOATING ASYMMETRIC "ORGANIZED CHAOS" ADVISORY ELEMENTS */}
         {badgesVisible && (
