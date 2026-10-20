@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 
 const HeroModel = dynamic(() => import("./components/HeroModel"), {
@@ -17,6 +18,27 @@ const LICAdvisoryShowcase = dynamic(
 
 const LICPortfolioArchive = dynamic(
   () => import("./components/LICPortfolioArchive"),
+  {
+    ssr: false,
+  }
+);
+
+const StitchAdvisorDossier = dynamic(
+  () => import("./components/StitchAdvisorDossier"),
+  {
+    ssr: false,
+  }
+);
+
+const StitchStewardshipAndTestimonials = dynamic(
+  () => import("./components/StitchStewardshipAndTestimonials"),
+  {
+    ssr: false,
+  }
+);
+
+const StitchConsultationVault = dynamic(
+  () => import("./components/StitchConsultationVault"),
   {
     ssr: false,
   }
@@ -375,39 +397,63 @@ export default function Home() {
         </div>
 
         {/* Center: Editorial Navigation Links */}
-        <nav className="hidden md:flex items-center gap-9 text-xs tracking-[0.25em] uppercase text-white/70 font-light">
-          <button
-            onClick={() => setCreaturesModalOpen(true)}
-            className="hover:text-[#F59E0B] transition-colors duration-300 cursor-pointer"
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs tracking-[0.2em] uppercase text-white/70 font-light">
+          <Link
+            href="/advisor"
+            className="hover:text-[#F59E0B] transition-colors duration-300"
           >
-            Sovereign Plans
-          </button>
-          <button
-            onClick={() => setCreaturesModalOpen(true)}
-            className="hover:text-[#F59E0B] transition-colors duration-300 cursor-pointer"
+            Advisor Profile
+          </Link>
+          <Link
+            href="/plans"
+            className="hover:text-[#F59E0B] transition-colors duration-300"
           >
-            Key Portfolios
-          </button>
-          <button
-            onClick={() => setExploreModalOpen(true)}
-            className="hover:text-[#F59E0B] transition-colors duration-300 cursor-pointer"
+            Insurance Plans
+          </Link>
+          <a
+            href="#stewardship"
+            className="hover:text-[#F59E0B] transition-colors duration-300"
           >
-            Pillars of Trust
-          </button>
-          <button
-            onClick={() => setExploreModalOpen(true)}
-            className="hover:text-[#F59E0B] transition-colors duration-300 cursor-pointer"
+            Why Aman
+          </a>
+          <a
+            href="#testimonials"
+            className="hover:text-[#F59E0B] transition-colors duration-300"
           >
-            Claim Support
-          </button>
+            Endorsements
+          </a>
+          <Link
+            href="/contact"
+            className="hover:text-[#F59E0B] transition-colors duration-300"
+          >
+            Contact Desk
+          </Link>
         </nav>
 
-        {/* Right: Audio toggle & Index/Menu CTA */}
-        <div className="flex items-center gap-4 md:gap-6">
+        {/* Right: Audio toggle & Contact Quick Actions */}
+        <div className="flex items-center gap-3 md:gap-4">
+          <a
+            href="tel:781792960X"
+            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/15 text-[11px] font-mono text-[#F59E0B] hover:bg-white/[0.08] transition-colors"
+          >
+            <span className="material-symbols-outlined text-[15px]">call</span>
+            <span>781792960X</span>
+          </a>
+
+          <a
+            href="https://wa.me/91781792960X"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00529B]/30 hover:bg-[#00529B]/60 border border-[#38BDF8]/40 text-[11px] font-mono text-[#38BDF8] uppercase tracking-wider transition-all"
+          >
+            <span className="material-symbols-outlined text-[15px]">chat</span>
+            <span>WhatsApp</span>
+          </a>
+
           <button
             onClick={toggleSound}
             aria-label="Toggle ambient atmosphere audio"
-            className="flex items-center gap-2.5 rounded-full border border-white/15 px-3.5 py-1.5 text-[11px] tracking-[0.2em] uppercase text-white/80 hover:border-white/40 hover:text-white transition-all bg-white/[0.02] backdrop-blur-sm"
+            className="flex items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 text-[11px] tracking-[0.2em] uppercase text-white/80 hover:border-white/40 hover:text-white transition-all bg-white/[0.02] backdrop-blur-sm"
           >
             <span
               className={`inline-block w-1.5 h-1.5 rounded-full ${
@@ -418,13 +464,6 @@ export default function Home() {
               {soundActive ? "Sound ON" : "Sound OFF"}
             </span>
             <span className="sm:hidden">{soundActive ? "ON" : "OFF"}</span>
-          </button>
-
-          <button
-            onClick={() => setExploreModalOpen(true)}
-            className="hidden sm:flex items-center gap-2 text-xs tracking-[0.25em] uppercase text-[#F59E0B] hover:text-white transition-colors"
-          >
-            <span>[ EST. 1956 ]</span>
           </button>
         </div>
       </header>
@@ -674,7 +713,18 @@ export default function Home() {
       <LICAdvisoryShowcase />
 
       {/* 3. LIC PORTFOLIO ARCHIVE (CURATED PROTECTION & PRIVATE WEALTH VAULT) */}
-      <LICPortfolioArchive />
+      <div id="plans">
+        <LICPortfolioArchive />
+      </div>
+
+      {/* 4. STITCH ADVISOR PROFILE & AUDITED RECORD (AMAN CHAUDHARY) */}
+      <StitchAdvisorDossier />
+
+      {/* 5. STITCH STEWARDSHIP PILLARS & CLIENT ENDORSEMENTS */}
+      <StitchStewardshipAndTestimonials />
+
+      {/* 6. STITCH CONSULTATION VAULT & PRIORITY DISPATCH */}
+      <StitchConsultationVault />
     </div>
   );
 }

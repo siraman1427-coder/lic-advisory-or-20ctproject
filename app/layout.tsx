@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -15,10 +15,16 @@ const inter = Inter({
   weight: ["300", "400", "500", "600"],
 });
 
+const spaceMono = Space_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "LIC — Life Insurance Corporation of India | Premier Wealth & Protection Advisory",
+  title: "LIC — Life Insurance Corporation of India | Aman Chaudhary Authorized Advisory",
   description:
-    "Authorized LIC India Advisor. Securing generations, protecting legacies, and delivering guaranteed sovereign financial assurance.",
+    "Authorized Senior LIC India Advisor Aman Chaudhary (MDRT Accredited). Sovereign guaranteed financial security, generational wealth, and doorstep claim support.",
 };
 
 export default function RootLayout({
@@ -29,8 +35,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} h-full bg-[#000000] text-white antialiased`}
+      className={`${cormorant.variable} ${inter.variable} ${spaceMono.variable} h-full bg-[#000000] text-white antialiased`}
     >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
       <body className="min-h-full bg-[#000000] text-white font-sans selection:bg-white selection:text-black overflow-x-clip">
         {children}
       </body>
