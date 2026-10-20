@@ -25,13 +25,13 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
 
       mouseCoords.current = { x: normX, y: normY };
 
-      // Head & eye tracking rotation:
-      // Y-axis = horizontal gaze (yaw) -> follows cursor left/right
-      // X-axis = vertical gaze (pitch) -> follows cursor up/down
-      // Z-axis = natural subtle head tilt (roll)
+      // Gaze & Head Follow Cursor:
+      // Yaw (Y axis): head turns horizontally toward cursor
+      // Pitch (X axis): head tilts vertically up/down toward cursor
+      // Roll (Z axis): subtle natural head tilt
       targetRotation.current = {
-        x: -normY * 0.42,
-        y: normX * 0.62,
+        x: -normY * 0.40,
+        y: normX * 0.60,
         z: -normX * 0.08,
       };
     };
@@ -44,14 +44,19 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
     const container = containerRef.current;
     if (!container) return;
 
-    // 1. SCENE & CAMERA SETUP
+    // Clear any stale canvas from hot reload / strict mode
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
+    // 1. SCENE SETUP
     const scene = new THREE.Scene();
 
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0, 3.2);
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+    camera.position.set(0, 0, 3.4);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -61,92 +66,107 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.45;
+    renderer.toneMappingExposure = 1.35;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
-    // 2. STUDIO SCULPTURE LIGHTING (Curated to illuminate facial contours, eyes & head)
-    // Ambient light: Soft fill to prevent harsh shadows
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // 2. NATURAL STUDIO LIGHTING (Preserves full texture colors, eyes, skin & clothing)
+    // Ambient light: Clear illumination across all surfaces
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
     scene.add(ambientLight);
 
-    // Key light: Warm radiant studio light sculpting the face from top-right
-    const keyLight = new THREE.DirectionalLight(0xfff6ea, 3.8);
-    keyLight.position.set(2.8, 3.5, 3.2);
+    // Key light: Crisp frontal directional light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
+    keyLight.position.set(2.0, 3.0, 3.5);
     scene.add(keyLight);
 
-    // Cyan Rim light: Electric cyan rim highlighting the jawline & ear from back-left
-    const cyanRim = new THREE.DirectionalLight(0x38bdf8, 4.2);
-    cyanRim.position.set(-3.2, 2.8, -2.5);
-    scene.add(cyanRim);
+    // Fill light: Soft fill from the opposite side
+    const fillLight = new THREE.DirectionalLight(0xfff8ee, 1.8);
+    fillLight.position.set(-2.0, 1.2, 2.5);
+    scene.add(fillLight);
 
-    // Gold Rim light: Radiant sovereign gold highlighting the right silhouette
-    const goldRim = new THREE.DirectionalLight(0xf59e0b, 3.0);
-    goldRim.position.set(3.2, -1.8, -2.0);
+    // Overhead hair and shoulder light
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    topLight.position.set(0, 4.0, 1.0);
+    scene.add(topLight);
+
+    // Subtle golden rim (LIC gold accent)
+    const goldRim = new THREE.DirectionalLight(0xf59e0b, 1.8);
+    goldRim.position.set(3.0, -1.0, -2.0);
     scene.add(goldRim);
 
-    // Soft frontal bounce fill light
-    const frontFill = new THREE.DirectionalLight(0xdde5f0, 1.6);
-    frontFill.position.set(0, -2.5, 2.5);
-    scene.add(frontFill);
+    // Subtle cyan rim (LIC sovereign cyan accent)
+    const cyanRim = new THREE.DirectionalLight(0x38bdf8, 1.8);
+    cyanRim.position.set(-3.0, 1.0, -2.0);
+    scene.add(cyanRim);
 
-    // Dynamic point light that follows the cursor: creates living eye reflections & face highlights
-    const eyeGlintLight = new THREE.PointLight(0xfffaec, 4.2, 9, 1.1);
+    // Dynamic cursor point light (creates live specular eye reflections looking at the cursor)
+    const eyeGlintLight = new THREE.PointLight(0xffffff, 3.5, 8, 1.0);
     eyeGlintLight.position.set(0, 0, 2.8);
     scene.add(eyeGlintLight);
 
-    // 3. MODEL PIVOT GROUP (Rotates and tracks cursor)
+    // 3. MODEL PIVOT GROUP
     const modelPivot = new THREE.Group();
     scene.add(modelPivot);
 
-    // 4. LOAD GLB MODEL (Supports primary and fallback paths)
+    // 4. LOAD GLB MODEL (Supports public/3d model/ and fallback paths)
     const loader = new GLTFLoader();
-    const modelPaths = [
-      "/models/New_Project_10202026.glb",
+    const candidatePaths = [
       "/3d%20model/New_Project_10202026.glb",
+      "/models/New_Project_10202026.glb",
       "/3d model/New_Project_10202026.glb",
     ];
 
-    const loadModel = (index: number) => {
-      if (index >= modelPaths.length) {
-        console.error("All GLB paths failed to load.");
+    const tryLoad = (idx: number) => {
+      if (idx >= candidatePaths.length) {
+        console.error("Failed to load 3D GLB model from all paths.");
         return;
       }
 
       loader.load(
-        modelPaths[index],
+        candidatePaths[idx],
         (gltf) => {
           const root = gltf.scene;
 
           root.traverse((child) => {
             if ((child as THREE.Mesh).isMesh) {
               const mesh = child as THREE.Mesh;
+              // Compute vertex normals for smooth organic lighting
               mesh.geometry.computeVertexNormals();
 
-              // High-end alabaster / titanium sculpture material with crisp specular reflections
-              mesh.material = new THREE.MeshPhysicalMaterial({
-                color: new THREE.Color(0xdce2ec),
-                roughness: 0.32,
-                metalness: 0.16,
-                clearcoat: 0.75,
-                clearcoatRoughness: 0.18,
-                reflectivity: 0.88,
-              });
+              // Preserve original texture and material
+              if (mesh.material) {
+                const materials = Array.isArray(mesh.material)
+                  ? mesh.material
+                  : [mesh.material];
+
+                materials.forEach((mat) => {
+                  mat.needsUpdate = true;
+                  if ("roughness" in mat) {
+                    (mat as THREE.MeshStandardMaterial).roughness = 0.6;
+                  }
+                  if ("metalness" in mat) {
+                    (mat as THREE.MeshStandardMaterial).metalness = 0.05;
+                  }
+                });
+              }
             }
           });
 
-          // Compute precise bounding box to center geometry
+          // Compute bounding box and center precisely at origin
           const box = new THREE.Box3().setFromObject(root);
           const center = box.getCenter(new THREE.Vector3());
           const size = box.getSize(new THREE.Vector3());
           const maxDimension = Math.max(size.x, size.y, size.z);
 
           // Monumental center scaling
-          const scale = 2.15 / maxDimension;
+          const targetHeight = 2.2;
+          const scale = targetHeight / maxDimension;
           root.scale.setScalar(scale);
 
-          // Center geometry directly inside the pivot group
+          // Center geometry in pivot group
           root.position.x = -center.x * scale;
-          root.position.y = -center.y * scale - 0.04;
+          root.position.y = -center.y * scale - 0.08;
           root.position.z = -center.z * scale;
 
           modelPivot.add(root);
@@ -154,15 +174,14 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
         },
         undefined,
         () => {
-          // Try next fallback path
-          loadModel(index + 1);
+          tryLoad(idx + 1);
         }
       );
     };
 
-    loadModel(0);
+    tryLoad(0);
 
-    // 5. RESIZE OBSERVER
+    // 5. RESIZE HANDLING
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth || window.innerWidth;
@@ -175,34 +194,34 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // 6. ANIMATION LOOP WITH LERP SMOOTHING
+    // 6. ANIMATION LOOP (Smooth head and eye cursor tracking)
     let animationFrameId: number;
 
     const animate = () => {
-      // Smooth lerp easing for head and eye motion
-      const lerpFactor = 0.075;
+      // Lerp easing for natural weight
+      const lerp = 0.08;
 
       currentRotation.current.x +=
-        (targetRotation.current.x - currentRotation.current.x) * lerpFactor;
+        (targetRotation.current.x - currentRotation.current.x) * lerp;
       currentRotation.current.y +=
-        (targetRotation.current.y - currentRotation.current.y) * lerpFactor;
+        (targetRotation.current.y - currentRotation.current.y) * lerp;
       currentRotation.current.z +=
-        (targetRotation.current.z - currentRotation.current.z) * lerpFactor;
+        (targetRotation.current.z - currentRotation.current.z) * lerp;
 
-      // Apply rotation to model pivot so the head & eyes follow cursor
+      // Apply rotation to head/bust
       modelPivot.rotation.x = currentRotation.current.x;
       modelPivot.rotation.y = currentRotation.current.y;
       modelPivot.rotation.z = currentRotation.current.z;
 
-      // Subtle parallax translation gives 3D depth
-      const targetPosX = mouseCoords.current.x * 0.18;
-      const targetPosY = mouseCoords.current.y * 0.12;
-      modelPivot.position.x += (targetPosX - modelPivot.position.x) * 0.05;
-      modelPivot.position.y += (targetPosY - modelPivot.position.y) * 0.05;
+      // Subtle parallax translation
+      const targetX = mouseCoords.current.x * 0.16;
+      const targetY = mouseCoords.current.y * 0.10;
+      modelPivot.position.x += (targetX - modelPivot.position.x) * 0.05;
+      modelPivot.position.y += (targetY - modelPivot.position.y) * 0.05;
 
-      // Cursor eye-glint light follows cursor
-      eyeGlintLight.position.x = mouseCoords.current.x * 3.2;
-      eyeGlintLight.position.y = mouseCoords.current.y * 2.8 + 0.3;
+      // Move point light to cast eye reflection toward cursor
+      eyeGlintLight.position.x = mouseCoords.current.x * 2.8;
+      eyeGlintLight.position.y = mouseCoords.current.y * 2.4 + 0.2;
 
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(animate);
@@ -225,7 +244,7 @@ export default function HeroModel({ cursorPosition }: HeroModelProps) {
   return (
     <div
       ref={containerRef}
-      className={`pointer-events-none absolute inset-0 z-[15] flex items-center justify-center transition-opacity duration-1000 ${
+      className={`pointer-events-none absolute inset-0 z-[20] flex items-center justify-center transition-opacity duration-700 ${
         loaded ? "opacity-100" : "opacity-0"
       }`}
       style={{
