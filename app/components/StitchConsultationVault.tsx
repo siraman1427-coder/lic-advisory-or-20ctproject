@@ -160,7 +160,7 @@ export default function StitchConsultationVault() {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3 rounded-full bg-[#F59E0B] text-black font-semibold text-xs tracking-wider uppercase hover:bg-[#FBBF24] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] flex items-center justify-center gap-2"
+                      className="shimmer-mask w-full py-3.5 rounded-full bg-[#f2be64] text-black font-headline font-bold text-xs tracking-wider uppercase hover:bg-[#ffdeaa] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-[0_0_20px_rgba(242,190,100,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-[18px]">send</span>
                       <span>Request Priority Callback</span>

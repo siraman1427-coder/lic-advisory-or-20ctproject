@@ -31,6 +31,106 @@
   font-family: var(--font-mono), "Space Mono", monospace;
 }
 
+/* Stitch Design System Typography */
+.font-headline, .font-display {
+  font-family: var(--font-headline), "Be Vietnam Pro", sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-body), "Merriweather", Georgia, serif;
+}
+
+.font-label {
+  font-family: var(--font-label), "Anybody", sans-serif;
+}
+
+/* Stitch Ambient Floating Animations */
+@keyframes meshFloat {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -25px) scale(1.08);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+@keyframes pulseSlow {
+  0%, 100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.42;
+  }
+}
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes subtleShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.animate-mesh {
+  animation: meshFloat 18s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 9s ease-in-out infinite;
+}
+
+.badge-float-1 {
+  animation: floatBadge 5.5s ease-in-out infinite;
+}
+
+.badge-float-2 {
+  animation: floatBadge 6.8s ease-in-out -2.2s infinite;
+}
+
+.badge-float-3 {
+  animation: floatBadge 7.2s ease-in-out -4.1s infinite;
+}
+
+.shimmer-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-mask::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  animation: subtleShimmer 3.2s infinite ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-float-1,
+  .badge-float-2,
+  .badge-float-3,
+  .shimmer-mask::after,
+  .animate-mesh,
+  .animate-pulse-slow {
+    animation: none !important;
+  }
+}
+
 /* Subtle luxury glow effect for text & borders */
 .glow-subtle {
   text-shadow: 0 0 35px rgba(255, 255, 255, 0.22);

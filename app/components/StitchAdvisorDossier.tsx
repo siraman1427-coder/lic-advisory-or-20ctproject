@@ -30,30 +30,77 @@ export default function StitchAdvisorDossier() {
         {/* PROFILE SHOWCASE GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left: Portrait Card & Credentials */}
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-start">
-            <div className="relative w-full max-w-[420px] aspect-square rounded-3xl p-3 bg-gradient-to-b from-white/10 to-white/[0.02] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] group">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#090C12]">
+          <div className="lg:col-span-5 relative flex flex-col items-center justify-center">
+            {/* Glowing Halo Ring behind image */}
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#f2be64]/25 via-[#314865]/25 to-[#998ba5]/20 blur-2xl opacity-75" />
+
+            <div className="relative z-10 w-full max-w-[370px] sm:max-w-[420px] aspect-square rounded-3xl p-2.5 bg-[#282a2e] border border-white/10 shadow-2xl overflow-visible">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0c0e12]">
                 <Image
                   src="/images/aman_chaudhary.jpg"
                   alt="Aman Chaudhary - Authorized LIC Senior Advisor"
                   fill
                   sizes="(max-width: 768px) 100vw, 420px"
-                  className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-700 ease-out hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#090C12] via-transparent to-transparent opacity-85" />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0e12] via-transparent to-transparent opacity-85" />
 
-              {/* Verified Pill Overlay */}
-              <div className="absolute -bottom-4 left-4 right-4 bg-[#090C12]/95 border border-white/15 backdrop-blur-md rounded-full py-2 px-4 shadow-xl flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#F59E0B] text-[18px]">verified</span>
-                  <span className="text-xs font-semibold text-white tracking-wide">
-                    Certified LIC Financial Advisor
+                {/* Bottom Overlay Plate */}
+                <div className="absolute bottom-3 left-3 right-3 bg-[#1e2023]/90 backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-lg flex items-center justify-between border border-white/10">
+                  <div className="flex items-center gap-2.5">
+                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span className="text-[11px] font-label uppercase tracking-widest text-white font-semibold">
+                      Direct Desk Online
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-label text-[#f2be64] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#f2be64]/10 border border-[#f2be64]/30">
+                    IRDAI Validated
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-[#F59E0B] animate-pulse" />
-                  <span className="text-[10px] font-mono text-[#F59E0B]">SEC. 37 IRDAI</span>
+              </div>
+
+              {/* Floating Trust Badge 1: Top Right */}
+              <div className="badge-float-1 absolute -top-5 -right-4 sm:-right-6 z-20 bg-[#282a2e]/95 border border-white/15 backdrop-blur-lg px-3.5 py-2 rounded-xl shadow-xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#f2be64]/20 flex items-center justify-center text-[#f2be64]">
+                  <span className="material-symbols-outlined text-[17px]">verified</span>
+                </div>
+                <div className="text-left">
+                  <div className="text-[10px] font-label uppercase tracking-widest text-[#f2be64] font-bold">
+                    Licensed Authority
+                  </div>
+                  <div className="text-xs font-headline font-semibold text-white">
+                    Certified LIC Advisor
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Trust Badge 2: Mid Left */}
+              <div className="badge-float-2 absolute top-1/2 -left-4 sm:-left-8 -translate-y-1/2 z-20 bg-[#282a2e]/95 border border-white/15 backdrop-blur-lg px-3.5 py-2 rounded-xl shadow-xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#314865]/40 flex items-center justify-center text-[#b1c8ea]">
+                  <span className="material-symbols-outlined text-[17px]">military_tech</span>
+                </div>
+                <div className="text-left">
+                  <div className="text-[10px] font-label uppercase tracking-widest text-[#b1c8ea] font-bold">
+                    Global Benchmark
+                  </div>
+                  <div className="text-xs font-headline font-semibold text-white">
+                    MDRT Accredited
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Trust Badge 3: Bottom Right Overlap */}
+              <div className="badge-float-3 absolute -bottom-5 -right-3 sm:-right-5 z-20 bg-[#282a2e]/95 border border-white/15 backdrop-blur-lg px-3.5 py-2 rounded-xl shadow-xl flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#998ba5]/30 flex items-center justify-center text-[#d1c1dd]">
+                  <span className="material-symbols-outlined text-[17px]">shield</span>
+                </div>
+                <div className="text-left">
+                  <div className="text-[10px] font-label uppercase tracking-widest text-[#d1c1dd] font-bold">
+                    Govt. Protection
+                  </div>
+                  <div className="text-xs font-headline font-semibold text-white">
+                    Sec. 37 LIC Act Guarantee
+                  </div>
                 </div>
               </div>
             </div>
@@ -128,7 +175,7 @@ export default function StitchAdvisorDossier() {
             <div className="flex flex-wrap items-center gap-3 pt-3">
               <a
                 href="tel:7817929602"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F59E0B] text-black font-semibold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(245,158,11,0.35)] hover:bg-[#FBBF24] hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="shimmer-mask inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#f2be64] text-black font-semibold text-xs tracking-wider uppercase shadow-[0_0_25px_rgba(242,190,100,0.35)] hover:bg-[#ffdeaa] hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <span className="material-symbols-outlined text-[18px]">phone_in_talk</span>
                 <span>Call Advisor</span>
@@ -138,9 +185,9 @@ export default function StitchAdvisorDossier() {
                 href="https://wa.me/917817929602"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-white font-semibold text-xs tracking-wider uppercase hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#314865] hover:bg-[#3d5a7d] border border-[#b1c8ea]/30 text-[#b1c8ea] font-semibold text-xs tracking-wider uppercase hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <span className="material-symbols-outlined text-[18px] text-[#38BDF8]">chat</span>
+                <span className="material-symbols-outlined text-[18px]">chat</span>
                 <span>WhatsApp Message</span>
               </a>
 

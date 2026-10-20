@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Space_Mono } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Inter,
+  Space_Mono,
+  Be_Vietnam_Pro,
+  Merriweather,
+  Anybody,
+} from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -21,6 +28,25 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
+const beVietnamPro = Be_Vietnam_Pro({
+  variable: "--font-headline",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const merriweather = Merriweather({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  style: ["normal", "italic"],
+});
+
+const anybody = Anybody({
+  variable: "--font-label",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "LIC — Life Insurance Corporation of India | Aman Chaudhary Authorized Advisory",
   description:
@@ -35,7 +61,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${spaceMono.variable} h-full bg-[#000000] text-white antialiased`}
+      className={`${cormorant.variable} ${inter.variable} ${spaceMono.variable} ${beVietnamPro.variable} ${merriweather.variable} ${anybody.variable} h-full bg-[#000000] text-white antialiased`}
     >
       <head>
         <link
