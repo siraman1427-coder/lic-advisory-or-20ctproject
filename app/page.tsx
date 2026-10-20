@@ -479,7 +479,7 @@ export default function Home() {
 
         {/* THE OVERSIZED HERO HEADLINE: LIC */}
         <h1
-          className="font-editorial-serif text-[22vw] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] font-normal leading-none tracking-[0.16em] uppercase text-white glow-subtle transition-all duration-700 hover:tracking-[0.2em] drop-shadow-[0_15px_35px_rgba(0,0,0,0.85)]"
+          className="font-editorial-serif text-[22vw] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] font-normal leading-none tracking-[0.16em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-white/70 via-white/30 to-white/10 glow-subtle transition-all duration-700 hover:tracking-[0.2em] select-none"
           style={{ letterSpacing: "0.18em", textIndent: "0.18em" }}
         >
           LIC
