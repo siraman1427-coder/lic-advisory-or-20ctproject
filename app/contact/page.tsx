@@ -13,14 +13,53 @@ export default function ContactPage() {
     notes: "",
   });
   const [toastVisible, setToastVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setToastVisible(true);
-    setTimeout(() => {
-      setToastVisible(false);
-    }, 5500);
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: formData.name,
+          phone: formData.phone,
+          objective: formData.domain,
+          communication_channel: formData.channel,
+          notes: formData.notes,
+          source_page: "Contact Desk Page",
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit inquiry");
+      }
+
+      setToastVisible(true);
+      setFormData({
+        name: "",
+        phone: "",
+        domain: "Whole Life Regular Income (Jeevan Umang / Utsav)",
+        channel: "Phone Call",
+        notes: "",
+      });
+
+      setTimeout(() => {
+        setToastVisible(false);
+      }, 6000);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Error submitting inquiry";
+      console.error("Contact Desk submission error:", message);
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const offices = [
@@ -442,12 +481,29 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {errorMessage && (
+                    <div className="p-3 rounded-xl bg-red-900/30 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[16px] text-red-400">error</span>
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="shimmer-mask w-full py-4 rounded-xl bg-[#f2be64] text-black font-headline font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-[#ffdeaa] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSubmitting}
+                    className="shimmer-mask w-full py-4 rounded-xl bg-[#f2be64] text-black font-headline font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-[#ffdeaa] disabled:opacity-60 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-[18px]">verified</span>
-                    <span>Submit & Request Priority Callback</span>
+                    {isSubmitting ? (
+                      <>
+                        <span className="inline-block w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                        <span>Recording in Sovereign Vault...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-[18px]">verified</span>
+                        <span>Submit & Request Priority Callback</span>
+                      </>
+                    )}
                   </button>
                 </form>
               </div>

@@ -10,10 +10,40 @@ export default function StitchConsultationVault() {
     comments: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          full_name: formData.name,
+          phone: formData.phone,
+          objective: formData.objective,
+          comments: formData.comments,
+          source_page: "Consultation Vault",
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit inquiry");
+      }
+
+      setSubmitted(true);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Submission error";
+      console.error("Consultation Vault submission error:", message);
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -157,13 +187,30 @@ export default function StitchConsultationVault() {
                     </select>
                   </div>
 
+                  {errorMessage && (
+                    <div className="p-3 rounded-xl bg-red-900/30 border border-red-500/40 text-red-200 text-xs flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[16px] text-red-400">error</span>
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="shimmer-mask w-full py-3.5 rounded-full bg-[#f2be64] text-black font-headline font-bold text-xs tracking-wider uppercase hover:bg-[#ffdeaa] hover:scale-[1.01] active:scale-[0.99] transition-all shadow-[0_0_20px_rgba(242,190,100,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={isSubmitting}
+                      className="shimmer-mask w-full py-3.5 rounded-full bg-[#f2be64] text-black font-headline font-bold text-xs tracking-wider uppercase hover:bg-[#ffdeaa] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_0_20px_rgba(242,190,100,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span className="material-symbols-outlined text-[18px]">send</span>
-                      <span>Request Priority Callback</span>
+                      {isSubmitting ? (
+                        <>
+                          <span className="inline-block w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                          <span>Recording in Sovereign Vault...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-[18px]">send</span>
+                          <span>Request Priority Callback</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>
