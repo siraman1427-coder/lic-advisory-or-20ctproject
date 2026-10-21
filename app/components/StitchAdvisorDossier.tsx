@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function StitchAdvisorDossier() {
   return (
-    <section id="advisor" className="relative w-full bg-[#05070B] text-white py-20 lg:py-28 overflow-hidden border-t border-white/5">
+    <section id="advisor" className="relative w-full bg-[#05070B]/80 backdrop-blur-sm text-white py-20 lg:py-28 overflow-hidden border-t border-white/5 z-10">
       {/* Ambient background glow */}
       <div className="pointer-events-none absolute -top-40 right-0 w-[550px] h-[550px] rounded-full bg-[#F59E0B]/10 blur-[140px]" />
       <div className="pointer-events-none absolute bottom-0 left-10 w-[450px] h-[450px] rounded-full bg-[#00529B]/20 blur-[130px]" />

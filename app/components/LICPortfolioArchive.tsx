@@ -144,7 +144,7 @@ export default function LICPortfolioArchive() {
   };
 
   return (
-    <section className="relative w-full bg-[#05070B] text-white selection:bg-[#F59E0B] selection:text-black overflow-hidden py-24 sm:py-32">
+    <section className="relative w-full bg-[#05070B]/80 backdrop-blur-sm text-white selection:bg-[#F59E0B] selection:text-black overflow-hidden py-24 sm:py-32 z-10">
       {/* BACKGROUND FLOATING LOW-OPACITY WATERMARKS */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
         <div className="absolute top-[8%] -left-[10%] text-[13vw] font-editorial-serif font-black tracking-widest text-white/[0.015] whitespace-nowrap">

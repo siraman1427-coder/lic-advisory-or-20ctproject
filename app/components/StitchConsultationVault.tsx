@@ -17,7 +17,7 @@ export default function StitchConsultationVault() {
   };
 
   return (
-    <section id="consultation-vault" className="relative w-full bg-[#05070B] text-white py-20 lg:py-28 overflow-hidden border-t border-white/5">
+    <section id="consultation-vault" className="relative w-full bg-[#05070B]/80 backdrop-blur-sm text-white py-20 lg:py-28 overflow-hidden border-t border-white/5 z-10">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         <div className="p-8 sm:p-12 lg:p-16 rounded-3xl bg-[#090C12] border border-white/10 relative overflow-hidden shadow-2xl">
           {/* Subtle gold radial background glow */}

@@ -44,131 +44,22 @@ const StitchConsultationVault = dynamic(
   }
 );
 
+const HoverRevealFoundation = dynamic(
+  () => import("./components/HoverRevealFoundation"),
+  {
+    ssr: false,
+  }
+);
+
 export default function Home() {
   const [soundActive, setSoundActive] = useState(false);
   const [creaturesModalOpen, setCreaturesModalOpen] = useState(false);
   const [exploreModalOpen, setExploreModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
-  // Hero container reference for mouse tracking
-  const heroRef = useRef<HTMLDivElement | null>(null);
-  const [isInsideHero, setIsInsideHero] = useState(false);
-  const targetPosRef = useRef({ x: -1000, y: -1000 });
-  const currentPosRef = useRef({ x: -1000, y: -1000 });
-  const [renderPos, setRenderPos] = useState({ x: -1000, y: -1000 });
-
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const oscillatorsRef = useRef<OscillatorNode[]>([]);
   const gainNodeRef = useRef<GainNode | null>(null);
-
-  // Smooth cursor-following lerp animation loop
-  useEffect(() => {
-    let animationId: number;
-
-    const animate = () => {
-      // Smooth easing with lerp factor (0.12)
-      const lerp = 0.12;
-      currentPosRef.current.x +=
-        (targetPosRef.current.x - currentPosRef.current.x) * lerp;
-      currentPosRef.current.y +=
-        (targetPosRef.current.y - currentPosRef.current.y) * lerp;
-
-      setRenderPos({
-        x: Math.round(currentPosRef.current.x * 10) / 10,
-        y: Math.round(currentPosRef.current.y * 10) / 10,
-      });
-
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = heroRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    targetPosRef.current = { x, y };
-
-    if (!isInsideHero) {
-      setIsInsideHero(true);
-      // Snap position immediately on first entry to avoid floating in from offscreen
-      currentPosRef.current = { x, y };
-      setRenderPos({ x, y });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsInsideHero(false);
-  };
-
-  // Ethereal subtle star dust particles on background
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-
-    const particleCount = 45;
-    const particles = Array.from({ length: particleCount }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 1.4 + 0.3,
-      alpha: Math.random() * 0.4 + 0.1,
-      speedY: -(Math.random() * 0.25 + 0.05),
-      speedX: (Math.random() - 0.5) * 0.15,
-      pulse: Math.random() * Math.PI * 2,
-    }));
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.y += p.speedY;
-        p.x += p.speedX;
-        p.pulse += 0.02;
-
-        if (p.y < 0) {
-          p.y = height;
-          p.x = Math.random() * width;
-        }
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-
-        const currentAlpha = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
-
-        ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
 
   // Web Audio ambient drone soundscape
   const toggleSound = () => {
@@ -300,74 +191,17 @@ export default function Home() {
     },
   ];
 
-  // Radial gradient mask for spotlight reveal with 260px radius and soft feathered edge
-  const maskStyle = isInsideHero
-    ? `radial-gradient(circle 260px at ${renderPos.x}px ${renderPos.y}px, black 0%, black 135px, rgba(0, 0, 0, 0.65) 195px, transparent 260px)`
-    : "radial-gradient(circle 0px at 0px 0px, transparent 0%, transparent 100%)";
-
   return (
-    <div className="relative w-full bg-[#000000] overflow-x-clip selection:bg-[#F59E0B] selection:text-black">
-      {/* 1. EXISTING HERO SECTION (PRESERVED EXACTLY AS IT IS) */}
+    <div className="relative w-full bg-transparent overflow-x-clip selection:bg-[#F59E0B] selection:text-black">
+      {/* 1. FULL-PAGE HOVER REVEAL EFFECT (ACTIVE FOR COMPLETE WEB PAGE ACROSS ALL SECTIONS) */}
+      <HoverRevealFoundation />
+
+      {/* 2. HERO SECTION */}
       <div
-        ref={heroRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="relative min-h-screen w-full bg-[#000000] text-white flex flex-col justify-between selection:bg-white selection:text-black overflow-hidden font-sans cursor-default"
+        className="relative min-h-screen w-full bg-transparent text-white flex flex-col justify-between selection:bg-white selection:text-black overflow-hidden font-sans cursor-default z-10"
       >
-      {/* 1. BASE IMAGE (BG_IMAGE_1) */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <img
-          src="/images/bg_base.jpg"
-          alt="LIC Sovereign Nocturne World"
-          className="h-full w-full object-cover object-center"
-        />
-        {/* Subtle dark gradient overlay to preserve minimal mysterious depth & typography contrast */}
-        <div className="absolute inset-0 bg-black/45" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
-      </div>
-
-      {/* 2. BACKGROUND STAR DUST CANVAS */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute inset-0 z-[1] h-full w-full opacity-60"
-      />
-
-      {/* 3. VIGNETTE BOUNDARY */}
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_40%,#000000_100%)] opacity-80" />
-
-      {/* 4. REVEAL LAYER (REVEAL_IMAGE / BG_IMAGE_2) WITH CURSOR-FOLLOWING SPOTLIGHT MASK */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] overflow-hidden transition-opacity duration-300"
-        style={{
-          opacity: isInsideHero ? 1 : 0,
-          maskImage: maskStyle,
-          WebkitMaskImage: maskStyle,
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
-        }}
-      >
-        <img
-          src="/images/bg_reveal.jpg"
-          alt="LIC Sovereign Twilight Reveal"
-          className="h-full w-full object-cover object-center"
-        />
-        {/* Subtle ambient lighting blend matching the hero */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 opacity-40" />
-      </div>
-
-      {/* 5. SOFT SPOTLIGHT GLOW AMBIENCE ON THE REVEAL RADIUS EDGE */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[3] transition-opacity duration-300"
-        style={{
-          opacity: isInsideHero ? 1 : 0,
-          background: isInsideHero
-            ? `radial-gradient(circle 260px at ${renderPos.x}px ${renderPos.y}px, rgba(255, 190, 120, 0.08) 0%, rgba(255, 140, 60, 0.04) 180px, transparent 260px)`
-            : "transparent",
-        }}
-      />
-
-      {/* 6. 3D CHARACTER MODEL (CENTER OF SECTION) - HEAD & EYES FOLLOW CURSOR */}
-      <HeroModel />
+        {/* 3D CHARACTER MODEL (CENTER OF SECTION) - HEAD & EYES FOLLOW CURSOR */}
+        <HeroModel />
 
       {/* HEADER / NAVIGATION BAR (z-30: strictly above reveal and 3D layers) */}
       <header className="relative z-30 flex w-full items-center justify-between px-6 py-6 md:px-14 md:py-8">

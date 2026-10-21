@@ -64,7 +64,7 @@ export default function StitchStewardshipAndTestimonials() {
   ];
 
   return (
-    <section id="stewardship" className="relative w-full bg-[#05070B] text-white py-20 lg:py-28 overflow-hidden border-t border-white/5">
+    <section id="stewardship" className="relative w-full bg-[#05070B]/80 backdrop-blur-sm text-white py-20 lg:py-28 overflow-hidden border-t border-white/5 z-10">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
         {/* PILLARS HEADER */}
         <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">

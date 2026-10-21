@@ -268,7 +268,7 @@ export default function LICAdvisoryShowcase() {
   return (
     <section
       ref={trackRef}
-      className="relative w-full h-[190vh] bg-[#05070B] text-white selection:bg-[#F59E0B] selection:text-black"
+      className="relative w-full h-[190vh] bg-[#05070B]/75 backdrop-blur-xs text-white selection:bg-[#F59E0B] selection:text-black z-10"
     >
       {/* STICKY 100VH CONTAINER (Pinned during scroll track) */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
