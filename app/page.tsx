@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
+import { useRouter } from "next/navigation";
+import { useAuth } from "./context/AuthContext";
+
 const HeroModel = dynamic(() => import("./components/HeroModel"), {
   ssr: false,
 });
@@ -52,6 +55,16 @@ const HoverRevealFoundation = dynamic(
 );
 
 export default function Home() {
+  const router = useRouter();
+  const { user, signOut } = useAuth();
+
+  const handleProtectedTabClick = (e: React.MouseEvent, target: string) => {
+    if (!user) {
+      e.preventDefault();
+      router.push(`/login?redirect=${encodeURIComponent(target)}`);
+    }
+  };
+
   const [soundActive, setSoundActive] = useState(false);
   const [creaturesModalOpen, setCreaturesModalOpen] = useState(false);
   const [exploreModalOpen, setExploreModalOpen] = useState(false);
@@ -230,75 +243,71 @@ export default function Home() {
           </span>
         </div>
 
-        {/* Center: Editorial Navigation Links */}
+        {/* Center: Editorial Navigation Links (Protected with Auth) */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-xs tracking-[0.2em] uppercase text-white/70 font-light">
           <Link
             href="/advisor"
+            onClick={(e) => handleProtectedTabClick(e, "/advisor")}
             className="hover:text-[#F59E0B] transition-colors duration-300"
           >
             Advisor Profile
           </Link>
           <Link
             href="/plans"
+            onClick={(e) => handleProtectedTabClick(e, "/plans")}
             className="hover:text-[#F59E0B] transition-colors duration-300"
           >
             Insurance Plans
           </Link>
           <a
             href="#stewardship"
+            onClick={(e) => handleProtectedTabClick(e, "#stewardship")}
             className="hover:text-[#F59E0B] transition-colors duration-300"
           >
             Why Aman
           </a>
           <a
             href="#testimonials"
+            onClick={(e) => handleProtectedTabClick(e, "#testimonials")}
             className="hover:text-[#F59E0B] transition-colors duration-300"
           >
             Endorsements
           </a>
           <Link
             href="/contact"
+            onClick={(e) => handleProtectedTabClick(e, "/contact")}
             className="hover:text-[#F59E0B] transition-colors duration-300"
           >
             Contact Desk
           </Link>
         </nav>
 
-        {/* Right: Audio toggle & Contact Quick Actions */}
-        <div className="flex items-center gap-3 md:gap-4">
-          <a
-            href="tel:7817929602"
-            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/15 text-[11px] font-mono text-[#F59E0B] hover:bg-white/[0.08] transition-colors"
-          >
-            <span className="material-symbols-outlined text-[15px]">call</span>
-            <span>7817929602</span>
-          </a>
-
-          <a
-            href="https://wa.me/917817929602"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00529B]/30 hover:bg-[#00529B]/60 border border-[#38BDF8]/40 text-[11px] font-mono text-[#38BDF8] uppercase tracking-wider transition-all"
-          >
-            <span className="material-symbols-outlined text-[15px]">chat</span>
-            <span>WhatsApp</span>
-          </a>
-
-          <button
-            onClick={toggleSound}
-            aria-label="Toggle ambient atmosphere audio"
-            className="flex items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 text-[11px] tracking-[0.2em] uppercase text-white/80 hover:border-white/40 hover:text-white transition-all bg-white/[0.02] backdrop-blur-sm"
-          >
-            <span
-              className={`inline-block w-1.5 h-1.5 rounded-full ${
-                soundActive ? "bg-emerald-400 animate-pulse" : "bg-white/40"
-              }`}
-            />
-            <span className="hidden sm:inline">
-              {soundActive ? "Sound ON" : "Sound OFF"}
-            </span>
-            <span className="sm:hidden">{soundActive ? "ON" : "OFF"}</span>
-          </button>
+        {/* Right: Sovereign Login Tab / User Account Suite */}
+        <div className="flex items-center gap-3">
+          {!user ? (
+            <Link
+              href="/login"
+              className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#f2be64] to-[#f59e0b] text-black text-xs font-headline font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.35)] hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[18px]">lock_open</span>
+              <span>Login / Sign Up</span>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-[#F59E0B]/30 text-xs font-mono text-white/90">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden sm:inline max-w-[150px] truncate">{user.email}</span>
+                <span className="sm:hidden">Active</span>
+              </div>
+              <button
+                onClick={() => signOut()}
+                className="px-3.5 py-1.5 rounded-full border border-white/20 hover:border-red-400/50 hover:bg-red-950/20 text-white/70 hover:text-red-300 text-[11px] font-mono uppercase tracking-wider transition-all cursor-pointer"
+                title="Sign out of account"
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
         </div>
       </header>
 
@@ -347,11 +356,17 @@ export default function Home() {
             </p>
           </div>
 
-          {/* RIGHT: CTAs matching placement and styling */}
+          {/* RIGHT: CTAs matching placement and styling (Protected with Auth) */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             {/* Primary CTA: Explore LIC Plans → */}
             <button
-              onClick={() => setCreaturesModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  router.push("/login?redirect=/plans");
+                } else {
+                  setCreaturesModalOpen(true);
+                }
+              }}
               className="group relative inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-white text-black text-xs md:text-sm font-medium tracking-[0.15em] uppercase transition-all duration-300 hover:bg-[#F59E0B] hover:text-black hover:shadow-[0_0_25px_rgba(245,158,11,0.5)] active:scale-[0.98] cursor-pointer"
             >
               <span>Explore LIC Plans</span>
@@ -362,7 +377,13 @@ export default function Home() {
 
             {/* Secondary CTA: View Sovereign Portfolios → */}
             <button
-              onClick={() => setExploreModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  router.push("/login?redirect=%23plans");
+                } else {
+                  setExploreModalOpen(true);
+                }
+              }}
               className="group inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full border border-white/30 bg-black/40 backdrop-blur-sm text-white text-xs md:text-sm font-light tracking-[0.15em] uppercase transition-all duration-300 hover:border-[#F59E0B] hover:bg-white/10 hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] active:scale-[0.98] cursor-pointer"
             >
               <span>View Sovereign Portfolios</span>

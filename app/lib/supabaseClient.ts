@@ -9,9 +9,13 @@ const supabaseAnonKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qdmp5ZXdsdXd5bHlzdnppa29iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NTM2NTMsImV4cCI6MjEwODEyOTY1M30.PV3Q1F3Q5jzcOLt2HXfGyioOFiw4B7kdzSpO145lFlQ";
 
+const isBrowser = typeof window !== "undefined";
+
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: false,
+    persistSession: isBrowser,
+    autoRefreshToken: isBrowser,
+    detectSessionInUrl: isBrowser,
   },
 });
 

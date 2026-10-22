@@ -47,6 +47,8 @@ const anybody = Anybody({
   weight: ["400", "500", "600", "700"],
 });
 
+import { AuthProvider } from "./context/AuthContext";
+
 export const metadata: Metadata = {
   title: "LIC — Life Insurance Corporation of India | Aman Chaudhary Authorized Advisory",
   description:
@@ -70,7 +72,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-[#000000] text-white font-sans selection:bg-white selection:text-black overflow-x-clip">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

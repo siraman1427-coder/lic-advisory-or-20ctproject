@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 import GlobalHeader from "../components/GlobalHeader";
 import StitchConsultationVault from "../components/StitchConsultationVault";
 
@@ -23,9 +25,17 @@ interface PlanItem {
 }
 
 export default function PlansPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activePlanModal, setActivePlanModal] = useState<PlanItem | null>(null);
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login?redirect=/plans");
+    }
+  }, [user, isLoading, router]);
 
   const plans: PlanItem[] = [
     {
@@ -145,6 +155,19 @@ export default function PlansPage() {
       plan.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesQuery;
   });
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen bg-[#111317] flex items-center justify-center text-white font-sans">
+        <div className="flex flex-col items-center gap-3">
+          <span className="inline-block w-8 h-8 border-2 border-[#f2be64] border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-mono tracking-widest text-[#f2be64] uppercase">
+            Verifying Sovereign Credentials...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-[#111317] text-[#e2e2e7] font-body selection:bg-[#f2be64] selection:text-black overflow-x-hidden">

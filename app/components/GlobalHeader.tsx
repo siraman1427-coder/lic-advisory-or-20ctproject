@@ -3,10 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function GlobalHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -15,6 +18,13 @@ export default function GlobalHeader() {
     { label: "Insurance Plans", href: "/plans" },
     { label: "Contact Agent", href: "/contact" },
   ];
+
+  const handleProtectedClick = (e: React.MouseEvent, href: string) => {
+    if (href !== "/" && !user) {
+      e.preventDefault();
+      router.push(`/login?redirect=${encodeURIComponent(href)}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 left-0 w-full z-50 bg-[#111317]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
@@ -44,7 +54,7 @@ export default function GlobalHeader() {
           </div>
         </Link>
 
-        {/* Desktop Navigation matching Stitch */}
+        {/* Desktop Navigation matching Stitch (Protected with Auth) */}
         <nav className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1a1c1f]/80 border border-white/5">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -52,6 +62,7 @@ export default function GlobalHeader() {
               <Link
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleProtectedClick(e, link.href)}
                 className={`px-4 py-2 rounded-lg text-xs font-label uppercase tracking-wider transition-all ${
                   isActive
                     ? "bg-[#1e2023] text-white font-semibold shadow-sm border border-white/10 text-[#f2be64]"
@@ -64,30 +75,32 @@ export default function GlobalHeader() {
           })}
         </nav>
 
-        {/* Right Quick Action Suite */}
+        {/* Right: Sovereign Login Tab / User Account Suite */}
         <div className="flex items-center gap-3">
-          <a
-            href="tel:7817929602"
-            className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-label uppercase tracking-wider bg-[#314865]/60 hover:bg-[#314865] text-[#b1c8ea] border border-[#b1c8ea]/30 transition-all font-semibold"
-          >
-            <span className="material-symbols-outlined text-[16px]">call</span>
-            <span>Call: 7817929602</span>
-          </a>
-
-          <a
-            href="https://wa.me/917817929602"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-label uppercase tracking-wider bg-[#f2be64] text-black hover:bg-[#ffdeaa] transition-all font-bold shadow-[0_2px_12px_rgba(242,190,100,0.3)]"
-          >
-            <span className="material-symbols-outlined text-[16px]">chat</span>
-            <span>WhatsApp</span>
-          </a>
-
-          <div className="relative w-8 h-8 rounded-full bg-[#282a2e] border border-white/10 flex items-center justify-center text-[#f2be64] shrink-0" title="Senior Advisor Desk Online">
-            <span className="material-symbols-outlined text-[18px]">verified_user</span>
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse border-2 border-[#111317]" />
-          </div>
+          {!user ? (
+            <Link
+              href={`/login?redirect=${encodeURIComponent(pathname)}`}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#f2be64] to-[#f59e0b] text-black text-xs font-headline font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(242,190,100,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[17px]">lock_open</span>
+              <span>Login / Sign Up</span>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1e2023] border border-[#f2be64]/30 text-xs font-mono text-white/90">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden sm:inline max-w-[140px] truncate">{user.email}</span>
+                <span className="sm:hidden">Active</span>
+              </div>
+              <button
+                onClick={() => signOut()}
+                className="px-3 py-1.5 rounded-full border border-white/20 hover:border-red-400/50 hover:bg-red-950/20 text-white/70 hover:text-red-300 text-[11px] font-mono uppercase tracking-wider transition-all cursor-pointer"
+                title="Sign out of account"
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
 
           {/* Mobile Menu Toggle Button */}
           <button
@@ -110,7 +123,10 @@ export default function GlobalHeader() {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleProtectedClick(e, link.href);
+                }}
                 className="px-4 py-2.5 rounded-xl text-xs font-label uppercase tracking-wider text-[#c2c7d0] hover:bg-[#1e2023] hover:text-[#f2be64] transition-colors"
               >
                 {link.label}
@@ -119,22 +135,32 @@ export default function GlobalHeader() {
           </div>
 
           <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
-            <a
-              href="tel:7817929602"
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#314865] text-[#b1c8ea] border border-[#b1c8ea]/30 text-xs font-label uppercase tracking-wider font-bold"
-            >
-              <span className="material-symbols-outlined text-[18px]">phone_in_talk</span>
-              <span>Call: 7817929602</span>
-            </a>
-            <a
-              href="https://wa.me/917817929602"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#f2be64] text-black text-xs font-label uppercase tracking-wider font-bold"
-            >
-              <span className="material-symbols-outlined text-[18px]">chat</span>
-              <span>Chat on WhatsApp</span>
-            </a>
+            {!user ? (
+              <Link
+                href={`/login?redirect=${encodeURIComponent(pathname)}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-[#f2be64] to-[#f59e0b] text-black text-xs font-headline font-bold uppercase tracking-wider shadow-md"
+              >
+                <span className="material-symbols-outlined text-[18px]">lock_open</span>
+                <span>Login / Sign Up</span>
+              </Link>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <div className="p-3 rounded-xl bg-[#1e2023] border border-[#f2be64]/30 text-xs font-mono text-white/90 flex items-center justify-between">
+                  <span className="truncate max-w-[200px]">{user.email}</span>
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase">Active</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    signOut();
+                  }}
+                  className="py-2.5 rounded-xl bg-red-950/30 border border-red-500/30 text-red-300 text-xs font-mono uppercase tracking-wider"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

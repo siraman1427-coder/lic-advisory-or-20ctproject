@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function StitchConsultationVault() {
+  const router = useRouter();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -15,6 +19,11 @@ export default function StitchConsultationVault() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      router.push("/login?redirect=%23consultation-vault");
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -25,6 +34,7 @@ export default function StitchConsultationVault() {
         body: JSON.stringify({
           full_name: formData.name,
           phone: formData.phone,
+          email: user.email,
           objective: formData.objective,
           comments: formData.comments,
           source_page: "Consultation Vault",
@@ -194,6 +204,13 @@ export default function StitchConsultationVault() {
                     </div>
                   )}
 
+                  {user && (
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Verified Client: {user.email}</span>
+                    </div>
+                  )}
+
                   <div className="pt-2">
                     <button
                       type="submit"
@@ -204,6 +221,11 @@ export default function StitchConsultationVault() {
                         <>
                           <span className="inline-block w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
                           <span>Recording in Sovereign Vault...</span>
+                        </>
+                      ) : !user ? (
+                        <>
+                          <span className="material-symbols-outlined text-[18px]">lock_open</span>
+                          <span>Sign In to Request Priority Callback</span>
                         </>
                       ) : (
                         <>

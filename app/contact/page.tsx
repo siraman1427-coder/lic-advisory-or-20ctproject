@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 import GlobalHeader from "../components/GlobalHeader";
 
 export default function ContactPage() {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login?redirect=/contact");
+    }
+  }, [user, isLoading, router]);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -101,6 +111,19 @@ export default function ContactPage() {
       a: "Once you schedule an appointment, Aman or an authorized associate visits your residence or office at your preferred hour to verify KYC documents, explain plan terms in detail, and issue official acknowledgement receipts.",
     },
   ];
+
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen bg-[#111317] flex items-center justify-center text-white font-sans">
+        <div className="flex flex-col items-center gap-3">
+          <span className="inline-block w-8 h-8 border-2 border-[#f2be64] border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-mono tracking-widest text-[#f2be64] uppercase">
+            Verifying Sovereign Credentials...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-[#111317] text-[#e2e2e7] font-body selection:bg-[#f2be64] selection:text-black overflow-x-hidden">
