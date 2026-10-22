@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./context/AuthContext";
 
-const HeroModel = dynamic(() => import("./components/HeroModel"), {
+const SplineRobot = dynamic(() => import("./components/SplineRobot"), {
   ssr: false,
 });
 
@@ -213,8 +213,10 @@ export default function Home() {
       <div
         className="relative min-h-screen w-full bg-transparent text-white flex flex-col justify-between selection:bg-white selection:text-black overflow-hidden font-sans cursor-default z-10"
       >
-        {/* 3D CHARACTER MODEL (CENTER OF SECTION) - HEAD & EYES FOLLOW CURSOR */}
-        <HeroModel />
+        {/* SPLINE 3D GENKUB ROBOT (RIGHT SIDE OF THE SCREEN) */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 pointer-events-none w-[320px] sm:w-[420px] md:w-[480px] lg:w-[560px] xl:w-[640px] h-[460px] sm:h-[540px] md:h-[620px] lg:h-[700px] flex items-center justify-end pr-2 md:pr-6 lg:pr-12">
+          <SplineRobot className="w-full h-full pointer-events-auto" />
+        </div>
 
       {/* HEADER / NAVIGATION BAR (z-30: strictly above reveal and 3D layers) */}
       <header className="relative z-30 flex w-full items-center justify-between px-6 py-6 md:px-14 md:py-8">
