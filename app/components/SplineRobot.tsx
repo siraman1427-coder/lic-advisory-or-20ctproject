@@ -93,13 +93,23 @@ export default function SplineRobot({ className = "" }: SplineRobotProps) {
         }}
       />
 
-      {/* Floating Status Badge */}
-      <div className="absolute bottom-2 right-4 md:right-8 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md pointer-events-none text-[10px] font-mono tracking-wider text-white/70">
+      {/* Floating Status Badge & AG-UI Trigger */}
+      <button
+        type="button"
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("open-ag-ui-agent"));
+          }
+        }}
+        className="absolute bottom-2 right-4 md:right-8 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 hover:bg-black border border-[#F59E0B]/40 hover:border-[#F59E0B] backdrop-blur-md text-[10px] font-mono tracking-wider text-white/90 shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:scale-105 active:scale-95 transition-all cursor-pointer pointer-events-auto"
+        title="Open AG-UI Conversational Advisor"
+      >
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
         <span className="text-[#F59E0B] font-bold">GENKUB</span>
         <span className="text-white/40">|</span>
-        <span className="hidden sm:inline">AI SOVEREIGN ROBOT</span>
-      </div>
+        <span className="hidden sm:inline">AI AG-UI ADVISOR</span>
+        <span className="material-symbols-outlined text-[13px] text-[#F59E0B]">chat</span>
+      </button>
     </div>
   );
 }

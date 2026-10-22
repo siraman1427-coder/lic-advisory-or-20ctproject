@@ -48,6 +48,7 @@ const anybody = Anybody({
 });
 
 import { AuthProvider } from "./context/AuthContext";
+import AgUiAgentChat from "./components/AgUiAgentChat";
 
 export const metadata: Metadata = {
   title: "LIC — Life Insurance Corporation of India | Aman Chaudhary Authorized Advisory",
@@ -72,7 +73,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-[#000000] text-white font-sans selection:bg-white selection:text-black overflow-x-clip">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <AgUiAgentChat />
+        </AuthProvider>
       </body>
     </html>
   );
