@@ -21,6 +21,7 @@ function LoginFormContent() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [googleSetupNeeded, setGoogleSetupNeeded] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Live Gmail validation check
@@ -82,10 +83,15 @@ function LoginFormContent() {
 
   const handleGoogleAuth = async () => {
     setError(null);
+    setGoogleSetupNeeded(false);
     setIsGoogleLoading(true);
     const res = await signInWithGoogle(redirectPath);
     if (!res.success) {
-      setError(res.error || "Failed to initiate Google sign-in.");
+      if (res.isProviderDisabled) {
+        setGoogleSetupNeeded(true);
+      } else {
+        setError(res.error || "Failed to initiate Google sign-in.");
+      }
       setIsGoogleLoading(false);
     }
   };
@@ -218,6 +224,68 @@ function LoginFormContent() {
           )}
           <span>Continue with Google</span>
         </button>
+
+        {/* Google Setup Guide if provider is not yet enabled in Supabase */}
+        {googleSetupNeeded && (
+          <div className="mb-6 p-4 rounded-2xl bg-[#00529B]/20 border border-[#00529B]/50 text-white text-xs space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[#F59E0B] font-bold">
+                <span className="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                <span className="uppercase tracking-wider font-mono text-[11px]">
+                  Google Provider Setup Needed
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setGoogleSetupNeeded(false)}
+                className="text-white/40 hover:text-white"
+                aria-label="Close"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+
+            <p className="text-white/80 leading-relaxed text-[11px]">
+              Supabase backend is connected, but the Google OAuth provider has not yet been toggled ON in your Supabase project dashboard.
+            </p>
+
+            <div className="bg-black/50 rounded-xl p-3 text-[10px] font-mono text-white/70 space-y-1.5 border border-white/5">
+              <div className="text-[#F59E0B] font-bold uppercase tracking-wider text-[9px]">
+                To activate direct Google 1-Click login:
+              </div>
+              <div>
+                1. Open{" "}
+                <a
+                  href="https://supabase.com/dashboard/project/mjvjyewluwylysvzikob/auth/providers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#F59E0B] underline font-bold"
+                >
+                  Supabase Auth Providers ↗
+                </a>
+              </div>
+              <div>2. Toggle <span className="text-white font-bold">Enable Google</span> ON</div>
+              <div>3. Enter Google OAuth Client ID &amp; Secret</div>
+            </div>
+
+            <div className="pt-1 flex gap-2">
+              <a
+                href="https://supabase.com/dashboard/project/mjvjyewluwylysvzikob/auth/providers"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2.5 rounded-xl bg-[#F59E0B] text-black font-bold text-[10px] uppercase tracking-wider text-center hover:bg-[#ffdeaa] transition-all flex items-center justify-center gap-1.5"
+              >
+                <span>Open Supabase Settings</span>
+                <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+              </a>
+            </div>
+
+            <div className="text-[10px] text-emerald-400 font-mono text-center pt-1.5 border-t border-white/10 flex items-center justify-center gap-1">
+              <span className="material-symbols-outlined text-[13px]">check</span>
+              <span>You can register or sign in instantly with Gmail &amp; Password below!</span>
+            </div>
+          </div>
+        )}
 
         {/* Divider */}
         <div className="relative flex items-center justify-center my-6">

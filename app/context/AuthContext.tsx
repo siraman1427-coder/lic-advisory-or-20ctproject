@@ -11,7 +11,7 @@ interface AuthContextType {
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ success: boolean; error?: string }>;
-  signInWithGoogle: (redirectPath?: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithGoogle: (redirectPath?: string) => Promise<{ success: boolean; error?: string; isProviderDisabled?: boolean }>;
   signOut: () => Promise<void>;
   requireAuth: (targetPath?: string) => boolean;
 }
@@ -150,10 +150,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const origin = typeof window !== "undefined" ? window.location.origin : "";
       const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(redirectPath)}`;
 
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo,
+          skipBrowserRedirect: true,
           queryParams: {
             access_type: "offline",
             prompt: "consent",
@@ -165,6 +166,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, error: error.message };
       }
 
+      if (!data?.url) {
+        return { success: false, error: "Failed to generate Google OAuth URL from Supabase." };
+      }
+
+      // Check if provider is supported on Supabase backend before redirecting
+      try {
+        const checkRes = await fetch(data.url, { method: "GET" });
+        if (!checkRes.ok) {
+          const body = await checkRes.json().catch(() => null);
+          const msg = body?.msg || "";
+          if (
+            msg.toLowerCase().includes("provider is not enabled") ||
+            body?.error_code === "validation_failed"
+          ) {
+            return {
+              success: false,
+              isProviderDisabled: true,
+              error:
+                "Google Provider is not enabled in your Supabase project dashboard yet. Please enable Google in Supabase Authentication -> Providers -> Google, or sign in using your @gmail.com email and password below.",
+            };
+          }
+          return {
+            success: false,
+            error: msg || "Google authorization server responded with an error.",
+          };
+        }
+      } catch {
+        // If fetch throws due to cross-origin redirect to accounts.google.com, proceed to redirect
+      }
+
+      // Safe to redirect to Google accounts login
+      window.location.href = data.url;
       return { success: true };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Google OAuth initialization error";
