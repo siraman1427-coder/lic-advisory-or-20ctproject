@@ -24,7 +24,7 @@ const DEFAULT_WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
     "**Greetings! I am GENKUB**, your AG-UI Sovereign Intelligence Agent.\n\n" +
-    "I can assist you with real-time actuarial calculations, policy comparisons, sovereign tax compliance (Section 10(10D) & 80C), or direct consultations with **Aman Sharma**.\n\n" +
+    "I can assist you with real-time actuarial calculations, policy comparisons, sovereign tax compliance (Section 10(10D) & 80C), or direct consultations with **Aman Chaudhary**.\n\n" +
     "How may I assist your portfolio today?",
   actions: [
     { label: "Tax Exemption (Sec 10(10D))", action: "tax" },
@@ -111,7 +111,7 @@ export default function AgUiAgentChat() {
         id: "err-" + Date.now(),
         role: "assistant",
         content:
-          "My sovereign neural uplink encountered a momentary delay. You may reach Aman Sharma directly at `+91 78179 29602` or book via our priority contact desk.",
+          "My sovereign neural uplink encountered a momentary delay. You may reach Aman Chaudhary directly at `+91 78179 29602` or book via our priority contact desk.",
         actions: [{ label: "Open Priority Desk", url: "/contact" }],
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };

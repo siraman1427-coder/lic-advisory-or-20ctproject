@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const SYSTEM_INSTRUCTION = `You are GENKUB (AG-UI v2.4), the elite AI Sovereign Financial Advisory Intelligence representing Life Insurance Corporation of India (LIC) and Authorized Senior Advisor Aman Sharma (MDRT Accredited).
+const SYSTEM_INSTRUCTION = `You are GENKUB (AG-UI v2.4), the elite AI Sovereign Financial Advisory Intelligence representing Life Insurance Corporation of India (LIC) and Authorized Senior Advisor Aman Chaudhary (MDRT Accredited).
 
 YOUR EXPERTISE & KNOWLEDGE:
 1. Sovereign Guarantee: Under Section 37 of the LIC Act 1956, the Government of India provides an absolute sovereign guarantee on the Sum Assured and declared bonuses.
@@ -13,7 +13,7 @@ YOUR EXPERTISE & KNOWLEDGE:
    - Jeevan Labh (Plan 936): High-return limited premium endowment plan with strong bonus additions.
    - SIIP (Plan 852): Unit-linked sovereign market plan with 100% refund of mortality charges.
    - Pension & Annuity Plans (Jeevan Shanti / Jeevan Akshay): Guaranteed lifelong pensions with deferred or immediate payout options.
-4. Advisor Aman Sharma:
+4. Advisor Aman Chaudhary:
    - MDRT (Million Dollar Round Table) Accredited Senior Wealth Advisor.
    - 98.6%+ IRDAI-benchmarked claim settlement track record.
    - Over ₹500 Cr+ assets secured for 10,000+ families and NRIs.
@@ -128,7 +128,7 @@ export async function POST(req: NextRequest) {
       actions.push({ label: "Tax Exemption Audit", url: "/contact" });
     }
     if (lower.includes("consult") || lower.includes("book") || lower.includes("aman") || lower.includes("advisor") || lower.includes("meeting")) {
-      actions.push({ label: "Schedule with Aman Sharma", url: "/contact" });
+      actions.push({ label: "Schedule with Aman Chaudhary", url: "/contact" });
     }
     if (lower.includes("claim") || lower.includes("settlement")) {
       actions.push({ label: "Priority Claim Desk", url: "/contact" });
@@ -174,7 +174,7 @@ function getFallbackResponse(message: string, userEmail?: string): string {
   }
   return (
     `Greetings! I am **GENKUB**, your AG-UI Sovereign Financial Intelligence Agent.\n\n` +
-    `I can assist you with custom policy structuring, Section 10(10D) tax compliance, guaranteed lifelong annuities, and direct consultations with Senior Advisor **Aman Sharma**.\n\n` +
+    `I can assist you with custom policy structuring, Section 10(10D) tax compliance, guaranteed lifelong annuities, and direct consultations with Senior Advisor **Aman Chaudhary**.\n\n` +
     `How may I assist your family's portfolio today?`
   );
 }
